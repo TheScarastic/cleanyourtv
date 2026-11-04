@@ -1,0 +1,9 @@
+{
+  "app_library": true,
+  "library_button": true,
+  "show_library_pill": false,
+  "library_ok_opens": true,
+  "launcher_settings_button": true,
+  "open_on_start_choice": true,
+  "tile_menu": true
+}
