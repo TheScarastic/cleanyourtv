@@ -1,0 +1,52 @@
+# Xiaomi MiTV-AXSO1 (dangalFHD), Android TV 9 (SDK 28), firmware PI.6157, India. This owner's list.
+# Based on examples/xiaomi-mitv-axso1/debloat.txt, changed for the owner's choices (2026-11-01):
+# - PatchWall was kept at first, then disabled in batch 5 once the new launcher was in use (see there).
+# - Kept by choice: Google Assistant, Chromecast, Mi Cast/Miracast, SonyLIV, ZEE5, Hungama, JioCinema,
+#   Spotify, Kodi, YouTube Music, Play Games, Mi Music, Mi Gallery, Sensara TV guide.
+# - com.xiaomi.mitv.updateservice is disabled by choice. It is NOT the firmware updater: decompiled, it only
+#   updates PatchWall and Xiaomi apps from in.tv.global.mi.com, and with individual_privacy_enabled=0 it never
+#   contacts the server (it answers itself with a local 404). Firmware OTAs come through Google Play Services
+#   (com.google.android.gms/.update.SystemUpdatePanoActivity), which stays enabled. Re-enable it if you
+#   accept Xiaomi's privacy policy and want PatchWall updates.
+# - com.google.android.tvrecommendations also feeds Google sign-in notices: if Play Store ever says
+#   "Authentication is required", pm enable it (see examples/xiaomi-mitv-axso2/debloat.txt).
+# - The stock launcher com.google.android.tvlauncher is disabled by launcher/build-and-install.ps1 once the
+#   new launcher is Home, not by this list.
+#
+# Apply:  $env:TV_ADB_BINARY='adb'; tools\disable.ps1 -TvHost <tv ip>:5555 personal\mitv-axso1\debloat-axso1.txt
+# Undo:   $env:TV_ADB_BINARY='adb'; tools\restore.ps1 -TvHost <tv ip>:5555 personal\mitv-axso1\debloat-axso1.txt
+# Everything is DISABLED for user 0, never uninstalled.
+
+# Batch 1: Xiaomi + Google telemetry
+com.miui.tv.analytics
+com.xiaomi.statistic
+com.google.android.feedback
+com.google.android.tv.bugreportsender
+
+# Batch 2: content rows, floating frame, partner auto-installs (PatchWall itself stays)
+com.xiaomi.floatingframe
+com.google.android.tvrecommendations
+com.google.android.leanbacklauncher.recommendations
+android.autoinstalls.config.xioami.dangal   # Play auto-install of partner apps (sic, "xioami")
+
+# Batch 3: Xiaomi background services
+com.xiaomi.mitv.handbook
+com.xiaomo.tv.milegal               # static legal / privacy text screens
+com.mitv.dream                      # Mi screensaver; Google Ambient mode (backdrop) stays the screensaver
+com.xiaomi.mitv.updateservice       # app updater only, see header
+
+# Batch 4: Google extras + owner's choices
+com.google.android.partnersetup
+com.google.android.syncadapters.calendar
+com.android.providers.calendar
+com.google.android.leanbacklauncher          # old Android TV launcher
+com.netflix.mediaclient                      # phone Netflix app; the TV one (com.netflix.ninja) stays
+com.google.android.videos                    # Play Movies & TV, discontinued, ANRs at every boot
+
+# Batch 5 (2026-11-01, later): the owner switched to the new launcher, so PatchWall goes after all.
+# The remote's Mi (PatchWall) button does nothing after this; no key helper, since HOME_KEY_SERVICE breaks held volume here.
+com.mitv.tvhome.atv                 # PatchWall
+com.xm.webcontent                   # PatchWall's web views
+com.xiaomi.mitv.tvmanager           # "TV Manager" cleaner, reached from PatchWall
+
+# Kept on this TV: com.mitv.videoplayer (Media Explorer / Mi Gallery play USB videos with it; nothing runs in the background).
